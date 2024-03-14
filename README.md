@@ -5,9 +5,11 @@ desribed in our recent preprint, [Probabilistically-sound beam search with maske
 
 ## Setup
 To install all dependencies in a conda environment, one can first clone this repo, then run:
+
 ```
 conda env create -f conda_env.yml -n hcb_infilling_env
 ```
+
 This conda environment will contain all necessary dependencies (and probably also a few extra packages
 as well).
 
