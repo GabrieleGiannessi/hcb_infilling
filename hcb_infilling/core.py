@@ -1,5 +1,9 @@
 import torch
 
+from torch import nn
+
+from .utils import get_best_masked_positions, get_masked_positions
+
 
 @torch.no_grad()
 def decode_base(
@@ -8,11 +12,13 @@ def decode_base(
     beam_size,
     probs_update_fxn,
     probs_to_token_fxn,
+    model,
+    mask_id,
     pivots = None,
     best_to_worst = False,
-    model = model,
-    mask_id = tokenizer.mask_token_id
 ):
+
+  device = next(model.parameters()).device
   masked_positions = get_masked_positions(input_ids, mask_id=mask_id)
   remaining_masked_positions = masked_positions.clone()
   num_masked_positions = masked_positions.shape[1]

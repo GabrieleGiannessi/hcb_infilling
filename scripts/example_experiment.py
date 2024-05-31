@@ -62,7 +62,7 @@ num_experiments = 32
 
 # Construct data
 
-data = sep_sents(' '.join(brown.words()), 0, max_toks = context_length)
+data = sep_sents(' '.join(brown.words()), 0, tokenizer, max_toks = context_length)
 print("Separated data.")
 
 data = tokenizer(data, padding=True, truncation=True, return_tensors='pt')
@@ -96,9 +96,9 @@ for batch_num in range(num_experiments):
   if batch_num % report_period == 0:
     print(f"Index: {mask_start_ind} / {total-num_masks}")
   masked_positions = list(range(mask_start_ind,mask_start_ind+num_masks))
-  masked_inputs_batch, true_ids_batch = mask_tokens_batch(input_ids, masked_positions)
+  masked_inputs_batch, true_ids_batch = mask_tokens_batch(input_ids, masked_positions, tokenizer.mask_token_id, tokenizer.pad_token_id)
 
-  suggestions_batch = decode_modified_LeftToRight_vectorized(masked_inputs_batch, attention_mask, beam_size, tokenizer.mask_token_id)
+  suggestions_batch = decode_modified_LeftToRight_vectorized(model, masked_inputs_batch, attention_mask, beam_size, tokenizer.mask_token_id)
   count_batch, num_correct_batch = score_batch(suggestions_batch, true_ids_batch, tokenizer, method=method)
   num_modified_LeftToRight_correct += num_correct_batch
   update_metrics(
@@ -113,7 +113,7 @@ for batch_num in range(num_experiments):
     )
   )
 
-  suggestions_batch = decode_modified_BestToWorst_vectorized(masked_inputs_batch, attention_mask, beam_size, tokenizer.mask_token_id)
+  suggestions_batch = decode_modified_BestToWorst_vectorized(model, masked_inputs_batch, attention_mask, beam_size, tokenizer.mask_token_id)
   count_batch, num_correct_batch = score_batch(suggestions_batch, true_ids_batch, tokenizer, method=method)
   num_modified_BestToWorst_correct += num_correct_batch
   update_metrics(
@@ -128,7 +128,7 @@ for batch_num in range(num_experiments):
     )
   )
 
-  suggestions_batch = decode_standard_LeftToRight_vectorized(masked_inputs_batch, attention_mask, beam_size)
+  suggestions_batch = decode_standard_LeftToRight_vectorized(model=model, input_ids=masked_inputs_batch, attention_mask= attention_mask, beam_size=beam_size, mask_id=tokenizer.mask_token_id)
   count_batch, num_correct_batch = score_batch(suggestions_batch, true_ids_batch, tokenizer, method=method)
   num_standard_LeftToRight_correct += num_correct_batch
   update_metrics(
@@ -143,7 +143,7 @@ for batch_num in range(num_experiments):
     )
   )
 
-  suggestions_batch = decode_standard_BestToWorst_vectorized(masked_inputs_batch, attention_mask, beam_size)
+  suggestions_batch = decode_standard_BestToWorst_vectorized(model=model, input_ids=masked_inputs_batch, attention_mask= attention_mask, beam_size=beam_size, mask_id=tokenizer.mask_token_id)
   count_batch, num_correct_batch = score_batch(suggestions_batch, true_ids_batch, tokenizer, method=method)
   num_standard_BestToWorst_correct += num_correct_batch
   update_metrics(
