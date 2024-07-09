@@ -1,7 +1,7 @@
-# Probabilistically-sound beam search with masked language models
+# Probabilistically-Sound Beam Search with Masked Language Models
 
 This repo contains the code necessary to run experiments using the HCB beam search methodology
-desribed in our recent preprint, [Probabilistically-sound beam search with masked language models](https://arxiv.org/abs/2402.15020)
+desribed in our recent preprint, [Probabilistically-Sound Beam Search with Masked Language Models](https://arxiv.org/abs/2402.15020)
 
 ## Setup
 To install all dependencies in a conda environment, one can first clone this repo, then run:
