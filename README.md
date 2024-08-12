@@ -18,5 +18,4 @@ To run experiments using our HCB beam search methods, please refer to `scripts/e
 an example of how to compare HCB beam search to standard beam search on the Brown corpus. Please feel
 free to inspect the differences between the methods by beginning at `hcb_infilling/decode.py`.
 
-For questions, don't hesitate to make an issue here, or to reach out to ccbreen@mit.edu, rcalef@mit.edu,
-asapp@mit.edu, or cabrooks@princeton.edu. Happy infilling!
+For questions, don't hesitate to make an issue here. Happy infilling!
